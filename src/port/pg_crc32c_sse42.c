@@ -13,6 +13,7 @@
  *-------------------------------------------------------------------------
  */
 #include "c.h"
+#include "postgres.h"
 
 #include <nmmintrin.h>
 #ifdef USE_AVX512_CRC32C_WITH_RUNTIME_CHECK
@@ -76,10 +77,12 @@ pg_comp_crc32c_sse42(pg_crc32c crc, const void *data, size_t len)
     double duration = (ts_end.tv_sec - ts_start.tv_sec) +
                       (ts_end.tv_nsec - ts_start.tv_nsec) / 1e9;
 
-    fprintf(stderr, "[pg_comp_crc32c_sse42] start: %ld.%09ld, end: %ld.%09ld, duration: %.6f s, len: %zu\n",
-            ts_start.tv_sec, ts_start.tv_nsec,
-            ts_end.tv_sec, ts_end.tv_nsec,
-            duration, len);
+    elog(LOG,
+		"[crc32c_sse42] len=%zu | start=%ld.%09ld | end=%ld.%09ld | duration=%.6f s",
+		len,
+		ts_start.tv_sec, ts_start.tv_nsec,
+		ts_end.tv_sec, ts_end.tv_nsec,
+		duration);
 
 	return crc;
 }
@@ -174,10 +177,12 @@ pg_comp_crc32c_avx512(pg_crc32c crc, const void *data, size_t len)
     double duration = (ts_end.tv_sec - ts_start.tv_sec) +
                       (ts_end.tv_nsec - ts_start.tv_nsec) / 1e9;
 
-    fprintf(stderr, "[pg_comp_crc32c_avx512] start: %ld.%09ld, end: %ld.%09ld, duration: %.6f s, len: %zu\n",
-            ts_start.tv_sec, ts_start.tv_nsec,
-            ts_end.tv_sec, ts_end.tv_nsec,
-            duration, len);
+    elog(LOG,
+		"[pg_comp_crc32c_avx512] len=%zu | start=%ld.%09ld | end=%ld.%09ld | duration=%.6f s",
+		len,
+		ts_start.tv_sec, ts_start.tv_nsec,
+		ts_end.tv_sec, ts_end.tv_nsec,
+		duration);
 
 	return pg_comp_crc32c_sse42(crc0, buf, len);
 }
