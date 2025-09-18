@@ -3,6 +3,10 @@
 source km_config
 mkdir -p $pg_logs_dir
 
+[ -d "$data_dir" ] && rm -rf "$data_dir"
+mkdir -p "$data_dir"
+$initdb -D "$data_dir" > /dev/null 2>&1
+
 $pg_ctl -D $data_dir -l $pg_log_file start -o "-p $pg_port"
 
 if $psql -p $pg_port -lqt | cut -d \| -f 1 | grep -qw "$db_name"; then
@@ -29,7 +33,7 @@ size_mb=$(echo "scale=2; $size_bytes/1024/1024" | bc)
 duration=$(echo "scale=2; $end - $start" | bc)
 throughput=$(echo "scale=4; $size_mb / $duration" | bc -l)
 
-target_log_file=$pg_log_file
+target_log_file=$bench_log_file
 search_target="pg_comp_crc32c_avx512"
 source km_parse_logs_for_checksum_len.sh
 

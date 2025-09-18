@@ -1,6 +1,6 @@
 #!/bin/bash
 
-SCALE_FACTOR=1000
+SCALE_FACTOR=5000
 pg_port=5434
 pg_server_pin_core=10
 timestamp=$(date +%Y%m%d_%H%M%S)
@@ -21,6 +21,8 @@ pg_logs_dir=km_logs
 pg_log_file=$pg_logs_dir/logfile
 bench_log_file=$pg_logs_dir/logfile-$timestamp
 pg_backup_bench_config=postgresql.benchmark.conf
+
+pg_ver=REL_18_RC1_bench
 
 
 
