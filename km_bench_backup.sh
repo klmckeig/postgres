@@ -1,7 +1,7 @@
 #!/bin/bash
 
-source klmckeig_config
-mkdir -p klmckeig_logs
+source km_config
+mkdir -p km_logs
 
 $pg_ctl -D $data_dir -l $pg_log_file start -o "-p $pg_port"
 

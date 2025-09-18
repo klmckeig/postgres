@@ -1,7 +1,7 @@
 #!/bin/bash
 
 pwd=$(pwd)
-source klmckeig_config
+source km_config
 mkdir -p "$install_dir"
 
 ./configure --enable-debug CFLAGS="-O2 -fno-omit-frame-pointer" --prefix=$install_dir
@@ -11,7 +11,9 @@ cd contrib/pg_prewarm
 make
 make install
 
-[ -d "$data_dir" ] && rm -rf "$data_dir"
-$initdb -D "$data_dir" > initdb_output.log 2>&1
-
 cd $pwd
+
+[ -d "$data_dir" ] && rm -rf "$data_dir"
+mkdir -p "$data_dir"
+$initdb -D "$data_dir" > /dev/null 2>&1
+

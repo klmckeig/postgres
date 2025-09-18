@@ -45,5 +45,5 @@ lib*.pc
 /portlock/
 results.csv
 output.log
-klmckeig_logs/
+km_logs/
 postgres-dev-install/
