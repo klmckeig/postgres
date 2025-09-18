@@ -71,7 +71,7 @@ pg_comp_crc32c_sse42(pg_crc32c crc, const void *data, size_t len)
 	}
 
     elog(LOG,
-		"[crc32c_sse42] len=%zu", len);
+		"[pg_comp_crc32c_sse42] len=%zu", len);
 
 	return crc;
 }
@@ -160,7 +160,7 @@ pg_comp_crc32c_avx512(pg_crc32c crc, const void *data, size_t len)
 	}
 
     elog(LOG,
-		"[crc32c_sse42] len=%zu", len);
+		"[pg_comp_crc32c_avx512] len=%zu", len);
 
 	return pg_comp_crc32c_sse42(crc0, buf, len);
 }
