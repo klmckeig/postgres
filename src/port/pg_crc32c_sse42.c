@@ -70,6 +70,8 @@ pg_comp_crc32c_sse42(pg_crc32c crc, const void *data, size_t len)
 		p++;
 	}
 
+	elog(LOG,"[pg_comp_crc32c_sse42] len=%zu", len);
+
 	return crc;
 }
 
