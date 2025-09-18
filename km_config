@@ -1,10 +1,10 @@
 #!/bin/bash
 
 SCALE_FACTOR=1
+pg_port=5434
 pg_server_pin_core=10
 timestamp=$(date +%Y%m%d_%H%M%S)
 install_dir=$(pwd)/postgres-dev-install
-mkdir -p "$install_dir"
 data_dir=$install_dir/data
 PG_BIN_DIR=$install_dir/bin
 pgbench="$PG_BIN_DIR/pgbench"
@@ -17,9 +17,8 @@ initdb="$PG_BIN_DIR/initdb"
 db_name=basebackup_testdb_sf$SCALE_FACTOR
 output_log=output.log
 result_file=results.csv
-mkdir -p klmckeig_logs
-pg_log_file=klmckeig_logs/logfile-$timestamp
-pg_port=5434
+pg_log_file=klmckeig_logs/logfile
+bench_log_file=klmckeig_logs/logfile-$timestamp
 pg_backup_bench_config=postgresql.benchmark.conf
 
 

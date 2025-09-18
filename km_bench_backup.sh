@@ -1,6 +1,7 @@
 #!/bin/bash
 
 source klmckeig_config
+mkdir -p klmckeig_logs
 
 $pg_ctl -D $data_dir -l $pg_log_file start -o "-p $pg_port"
 
@@ -11,7 +12,7 @@ fi
 $createdb $db_name
 $pgbench -i -s $SCALE_FACTOR $db_name
 
-taskset -c "$pg_server_pin_core" $pg_ctl -D $data_dir -l $pg_log_file restart -o "-c config_file=$pg_backup_bench_config -p $pg_port"
+taskset -c "$pg_server_pin_core" $pg_ctl -D $data_dir -l $bench_log_file restart -o "-c config_file=$pg_backup_bench_config -p $pg_port"
 
 start=$(date +%s.%N)
 size_bytes=$(
@@ -29,7 +30,7 @@ duration=$(echo "scale=2; $end - $start" | bc)
 throughput=$(echo "scale=4; $size_mb / $duration" | bc -l)
 
 headers="run_id,pg_ver,use_crc32c_avx512,duration(s),throughput(MB/s),scale_factor,backup_size(MB),start_time,end_time,output_log,pg_log,perf_log"
-values="$run_id,$pg_base,$USE_AVX512_CRC32C_BUILD,$duration,$throughput,$SCALE_FACTOR,$backup_size,$start,$end,$output_log,$pg_log_file,$perf_data"
+values="$run_id,$pg_base,$USE_AVX512_CRC32C_BUILD,$duration,$throughput,$SCALE_FACTOR,$size_mb,$start,$end,$output_log,$pg_log_file,$perf_data"
 
 echo "$headers"
 echo "$values"
