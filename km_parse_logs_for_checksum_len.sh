@@ -14,7 +14,6 @@ if [ "$target_count" -eq 0 ]; then
     echo "No matching lines found."
 else
     target_avg=$(echo "scale=2; $sum / $target_count" | bc)
-    echo "Average: $target_avg"
 fi
 
 echo target_count=$target_count
