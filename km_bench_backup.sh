@@ -7,7 +7,7 @@ $pg_ctl -D $data_dir -l $pg_log_file start -o "-p $pg_port"
 
 if $psql -p $pg_port -lqt | cut -d \| -f 1 | grep -qw "$db_name"; then
     echo "Database $db_name already exists. Dropping and recreating."
-    $dropdb $db_name
+    $dropdb $db_name -p $pg_port
 fi
 $createdb -p $pg_port $db_name
 $pgbench -i -s $SCALE_FACTOR -p $pg_port $db_name

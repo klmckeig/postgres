@@ -5,11 +5,9 @@ source km_config
 mkdir -p "$install_dir"
 
 ./configure --enable-debug CFLAGS="-O2 -fno-omit-frame-pointer" --prefix=$install_dir
-make -j50
-make install
+make -j50 && make install
 cd contrib/pg_prewarm
-make
-make install
+make && make install
 
 cd $pwd
 
