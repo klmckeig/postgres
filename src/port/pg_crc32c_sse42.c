@@ -27,9 +27,6 @@ pg_attribute_target("sse4.2")
 pg_crc32c
 pg_comp_crc32c_sse42(pg_crc32c crc, const void *data, size_t len)
 {
-	struct timespec ts_start, ts_end;
-    clock_gettime(CLOCK_MONOTONIC, &ts_start);
-
 	const unsigned char *p = data;
 	const unsigned char *pend = p + len;
 
@@ -73,16 +70,8 @@ pg_comp_crc32c_sse42(pg_crc32c crc, const void *data, size_t len)
 		p++;
 	}
 
-	clock_gettime(CLOCK_MONOTONIC, &ts_end);
-    double duration = (ts_end.tv_sec - ts_start.tv_sec) +
-                      (ts_end.tv_nsec - ts_start.tv_nsec) / 1e9;
-
     elog(LOG,
-		"[crc32c_sse42] len=%zu | start=%ld.%09ld | end=%ld.%09ld | duration=%.6f s",
-		len,
-		ts_start.tv_sec, ts_start.tv_nsec,
-		ts_end.tv_sec, ts_end.tv_nsec,
-		duration);
+		"[crc32c_sse42] len=%zu", len);
 
 	return crc;
 }
@@ -109,9 +98,6 @@ pg_attribute_target("vpclmulqdq,avx512vl")
 pg_crc32c
 pg_comp_crc32c_avx512(pg_crc32c crc, const void *data, size_t len)
 {
-	struct timespec ts_start, ts_end;
-    clock_gettime(CLOCK_MONOTONIC, &ts_start);
-
 	/* adjust names to match generated code */
 	pg_crc32c	crc0 = crc;
 	const char *buf = data;
@@ -173,16 +159,8 @@ pg_comp_crc32c_avx512(pg_crc32c crc, const void *data, size_t len)
 		len = end - buf;
 	}
 
-	clock_gettime(CLOCK_MONOTONIC, &ts_end);
-    double duration = (ts_end.tv_sec - ts_start.tv_sec) +
-                      (ts_end.tv_nsec - ts_start.tv_nsec) / 1e9;
-
     elog(LOG,
-		"[pg_comp_crc32c_avx512] len=%zu | start=%ld.%09ld | end=%ld.%09ld | duration=%.6f s",
-		len,
-		ts_start.tv_sec, ts_start.tv_nsec,
-		ts_end.tv_sec, ts_end.tv_nsec,
-		duration);
+		"[crc32c_sse42] len=%zu", len);
 
 	return pg_comp_crc32c_sse42(crc0, buf, len);
 }
