@@ -17,8 +17,9 @@ initdb="$PG_BIN_DIR/initdb"
 db_name=basebackup_testdb_sf$SCALE_FACTOR
 output_log=output.log
 result_file=results.csv
-pg_log_file=klmckeig_logs/logfile
-bench_log_file=klmckeig_logs/logfile-$timestamp
+pg_logs_dir=km_logs
+pg_log_file=$pg_logs_dir/logfile
+bench_log_file=$pg_logs_dir/logfile-$timestamp
 pg_backup_bench_config=postgresql.benchmark.conf
 
 

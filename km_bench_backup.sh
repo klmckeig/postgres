@@ -1,22 +1,22 @@
 #!/bin/bash
 
 source km_config
-mkdir -p km_logs
+mkdir -p $pg_logs_dir
 
 $pg_ctl -D $data_dir -l $pg_log_file start -o "-p $pg_port"
 
-if $psql -lqt | cut -d \| -f 1 | grep -qw "$db_name"; then
-echo "Database $db_name already exists. Dropping and recreating."
-$dropdb $db_name
+if $psql -p $pg_port -lqt | cut -d \| -f 1 | grep -qw "$db_name"; then
+    echo "Database $db_name already exists. Dropping and recreating."
+    $dropdb $db_name
 fi
-$createdb $db_name
-$pgbench -i -s $SCALE_FACTOR $db_name
+$createdb -p $pg_port $db_name
+$pgbench -i -s $SCALE_FACTOR -p $pg_port $db_name
 
 taskset -c "$pg_server_pin_core" $pg_ctl -D $data_dir -l $bench_log_file restart -o "-c config_file=$pg_backup_bench_config -p $pg_port"
 
 start=$(date +%s.%N)
 size_bytes=$(
-$pg_basebackup -X none -P -v -Ft -D - \
+$pg_basebackup -X none -P -v -Ft -D - -p $pg_port \
     --compress=none --checkpoint=fast \
     --manifest-checksums=crc32c \
     2> >(tee "$output_log" >&2) | wc -c
