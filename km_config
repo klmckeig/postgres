@@ -1,0 +1,47 @@
+#!/bin/bash
+
+SCALE_FACTOR=20000
+pg_port=5434
+pg_server_pin_core=10
+timestamp=$(date +%Y%m%d_%H%M%S)
+install_dir=$(pwd)/postgres-dev-install
+data_dir=$install_dir/data
+PG_BIN_DIR=$install_dir/bin
+pgbench="$PG_BIN_DIR/pgbench"
+pg_basebackup="$PG_BIN_DIR/pg_basebackup"
+dropdb="$PG_BIN_DIR/dropdb"
+createdb="$PG_BIN_DIR/createdb"
+pg_ctl="$PG_BIN_DIR/pg_ctl"
+psql="$PG_BIN_DIR/psql"
+initdb="$PG_BIN_DIR/initdb"
+db_name=basebackup_testdb_sf$SCALE_FACTOR
+output_log=output.log
+result_file=results.csv
+pg_logs_dir=km_logs
+pg_log_file=$pg_logs_dir/logfile
+bench_log_file=$pg_logs_dir/logfile-$timestamp
+pg_backup_bench_config=postgresql.benchmark.conf
+
+pg_ver=REL_18_RC1_bench
+
+
+
+echo SCALE_FACTOR=$SCALE_FACTOR
+echo data_dir=$data_dir
+echo install_dir=$install_dir
+echo PG_BIN_DIR=$PG_BIN_DIR
+echo pgbench=$pgbench
+echo pg_basebackup=$pg_basebackup
+echo dropdb=$dropdb
+echo createdb=$createdb
+echo pg_ctl=$pg_ctl
+echo psql=$psql
+echo db_name=$db_name
+echo pg_log_file=$pg_log_file
+echo result_file=$result_file
+echo pg_server_pin_core=$pg_server_pin_core
+echo timestamp=$timestamp
+echo pg_port=$pg_port
+echo pg_backup_bench_config=$pg_backup_bench_config
+
+
